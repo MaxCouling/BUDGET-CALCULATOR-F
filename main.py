@@ -18,7 +18,16 @@ def inputs(item,money,time,topic):
 
     else:
       item.append(useritem)#adds the income item to the income item(i_item) list
-      money.append (int(input("money assoatied\n")))#asks for money for the
+      
+      while True:
+
+        try:
+          money.append (int(input("money assoatied\n")))#asks for money for the
+        except:
+          "Try Again"
+        else:
+          break
+        
       time.append(input("time assoated\n"))#1 2 or 3
       continue
 def fortables(item,money,time,table):
@@ -33,15 +42,8 @@ os.system("clear")
 fortables(i_item,i_money,i_time,incometable)
 fortables(e_item,e_money,e_time,expensetable)
 
-#sorting the tables(it works so im not touching it)
-print(incometable)
-print(expensetable)
+#sorting the tables(it works so im not touching it NVMVMMVMVMVMV
 
-incometable.sort(reverse = True)
-
-expensetable.sort(reverse = True)
-print(incometable)
-print(expensetable)
 print('\nINCOME\n')
 print(tabulate(incometable, headers=["Item","Money", "Time"]))
 print("\nEXPENSES\n")
