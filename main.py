@@ -16,3 +16,16 @@ while True:#while this is running
     i_money.append (int(input("money assoatied\n")))
     i_time.append(input("time assoated\n"))#1 2 or 3
     continue
+while True:
+  os.system("clear")
+  expenseitem = input("expense item press enter to exit\n")
+
+  if expenseitem == "":
+    break
+
+  else:
+    
+    e_item.append(expenseitem)
+    e_money.append(int(input("money assoatied\n")))
+    e_time.append(input("time assoated\n"))#1 2 or 3
+    continue
