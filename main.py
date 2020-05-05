@@ -6,48 +6,42 @@ i_time =  []
 e_item = []
 e_time = []#defining all the lists as a list
 e_money=[]
-while True:#while this is running
-  os.system("clear")#clears os
-  incomeitem = input("income item press enter to exit\n")
-  if incomeitem == "":#if the user inputs an enter it breaks the while loop
-    break
-
-  else:
-    i_item.append(incomeitem)#adds the income item to the income item(i_item) list
-    i_money.append (int(input("money assoatied\n")))#asks for money for the item
-    i_time.append(input("time assoated\n"))#1 2 or 3
-    continue
-
-while True:
-  os.system("clear")
-  expenseitem = input("expense item press enter to exit\n")
-
-  if expenseitem == "":
-    break
-
-  else:
-    
-    e_item.append(expenseitem)
-    e_money.append(int(input("money assoatied\n")))
-    e_time.append(input("time assoated\n"))#1 2 or 3
-    continue
-os.system("clear")
-
 incometable= []
 expensetable = []
-for k in range(len(i_item)):
-  incometable.append([i_item[k],i_money[k],i_time[k]],)
-incometable.append(["TOTAL",sum(i_money)])
+def inputs(item,money,time,topic):
+  while True:#while this is running
+    os.system("clear")#clears os
+    print(topic,"item press enter to exit\n")
+    useritem = input()
+    if useritem == "":#if the user inputs an enter it breaks the while loop
+     break
 
-#incometable.append("TOTAL",sum(i_money))
-for i in range(len(e_item)):
-  expensetable.append([e_item[i],e_money[i],e_time[i]],)
-expensetable.append(["TOTAL",sum(e_money)])
+    else:
+      item.append(useritem)#adds the income item to the income item(i_item) list
+      money.append (int(input("money assoatied\n")))#asks for money for the
+      time.append(input("time assoated\n"))#1 2 or 3
+      continue
+def fortables(item,money,time,table):
 
+  for k in range(len(item)):
+    table.append([item[k],money[k],time[k]],)
+  table.append(["TOTAL",sum(money)])
 
+inputs(i_item,i_money,i_time,"Income")
+inputs(e_item,e_money,e_time,"Expense")
+os.system("clear")
+fortables(i_item,i_money,i_time,incometable)
+fortables(e_item,e_money,e_time,expensetable)
 
-print(incometable.sort(reverse = True))
+#sorting the tables(it works so im not touching it)
+print(incometable)
+print(expensetable)
 
+incometable.sort(reverse = True)
+
+expensetable.sort(reverse = True)
+print(incometable)
+print(expensetable)
 print('\nINCOME\n')
 print(tabulate(incometable, headers=["Item","Money", "Time"]))
 print("\nEXPENSES\n")
