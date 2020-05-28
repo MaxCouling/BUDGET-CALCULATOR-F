@@ -1,5 +1,6 @@
 import os#importing os
 from tabulate import tabulate#importing table function
+
 i_item = []
 i_money = []
 i_time =  []
@@ -9,7 +10,12 @@ e_money=[]
 incometable= []
 expensetable = []
 
-def inputs(item,money,time,topic,io):
+
+
+
+def inputs(item,moneylist,time,topic,io):
+  money = 0
+  timeinput = 0
   while True:#while this is running
     os.system("clear")#clears os
     print("Household",topic, "\nMoney coming",io,"\nPress enter with nothing typed in to continue onto the next step\n")
@@ -23,20 +29,67 @@ def inputs(item,money,time,topic,io):
       while True:
 
         try:
-          money.append (int(input("money assoatied\n")))#asks for money for the
+          money = int(input("money assoatied\n"))#asks for money for the
         except:
           print("Try Again")
         else:
           break
         
-      time.append(input("time assoated\nPress 1 for weekly,2 for fortnightly,3 for monthly,4 for quarterly and 5 for yearly"))#1 2 or 3
-
+      
+      while timeinput != 1 or 2 or 3 or 4 or 5:
+        timeinput = int(input("time assoated\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly\n"))#1 2 or 3 4 or 5
+        print(timeinput)
+        if timeinput == 1:
+          time.append("Weekly")
+          money = money / 7
+          print(money)#testing
+          moneylist.append(money)
+          break
+        elif timeinput == 2:
+          time.append("Fortnightly")
+          money = money / 14
+          print(money)#testing
+          moneylist.append(money)
+          break
+        elif timeinput == 3:
+          time.append("Monthly")
+          money = money / 30
+          print(money)#testing
+          moneylist.append(money)
+          break
+        elif timeinput == 4:
+          time.append("Quarterly")
+          money = money / 90
+          print(money)#testing
+          moneylist.append(money)
+          break
+        elif timeinput == 5:
+          time.append("Yearly")
+          money = money / 365
+          print(money)#testing
+          moneylist.append(money)
+          break
+        else:
+          print("Please input either 1,2,3,4 or 5")
       continue
+
+
+
+
+def timesboy(item, amount):
+  for i in range(len(item)):
+    item[i] = item[i] * amount
+
+
+
+
+
+
 
 def fortables(item,money,time,table):
 
   for k in range(len(item)):
-    table.append([item[k],money[k],time[k]],)
+    table.append([item[k],money[k],time],)
   table.append(["TOTAL",sum(money)])
 
 
@@ -45,10 +98,43 @@ def fortables(item,money,time,table):
 inputs(i_item,i_money,i_time,"Income","in")
 inputs(e_item,e_money,e_time,"Expense","out")
 os.system("clear")
-fortables(i_item,i_money,i_time,incometable)
-fortables(e_item,e_money,e_time,expensetable)
-print(incometable)
-print(expensetable)
+while True:
+
+  maintime = int(input("What would you like the timeframe of the table to be\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly"))
+
+
+  if maintime == 1:
+    maintime = "Weekly"
+    timesboy(i_money, 7)
+    timesboy(e_money, 7)
+    break
+    
+  elif maintime == 2:
+    maintime = ("Fortnightly")
+    timesboy(i_money, 14)
+    timesboy(e_money, 14)
+    break
+  elif maintime == 3:
+    maintime = ("Monthly")
+    timesboy(i_money, 30)
+    timesboy(e_money, 30)
+    break
+  elif maintime == 4:
+    maintime = ("Quarterly")
+    timesboy(i_money, 90)
+    timesboy(e_money, 90)
+    break
+  elif maintime == 5:
+    maintime = ("Yearly")
+    timesboy(i_money, 365)
+    timesboy(e_money, 365)
+    break
+  else:
+    print("Please input either 1,2,3,4 or 5")
+
+fortables(i_item,i_money,maintime,incometable)
+fortables(e_item,e_money,maintime,expensetable)
+
 #sorting the tables(it works so im not touching it NVMVMMVMVMVMV
 
 print('\nINCOME\n')
