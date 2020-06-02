@@ -41,31 +41,31 @@ def inputs(item,moneylist,time,topic,io):
         print(timeinput)
         if timeinput == 1:
           time.append("Weekly")
-          money = money / 7
+          money = money / 1
           print(money)#testing
           moneylist.append(money)
           break
         elif timeinput == 2:
           time.append("Fortnightly")
-          money = money / 14
+          money = money / 2
           print(money)#testing
           moneylist.append(money)
           break
         elif timeinput == 3:
           time.append("Monthly")
-          money = money / 30
+          money = money / 4
           print(money)#testing
           moneylist.append(money)
           break
         elif timeinput == 4:
           time.append("Quarterly")
-          money = money / 90
+          money = money / 12
           print(money)#testing
           moneylist.append(money)
           break
         elif timeinput == 5:
           time.append("Yearly")
-          money = money / 365
+          money = money / 52
           print(money)#testing
           moneylist.append(money)
           break
@@ -90,6 +90,7 @@ def fortables(item,money,time,table):
 
   for k in range(len(item)):
     table.append([item[k],money[k],time],)
+    table.sort(reverse = True, key=lambda x: x[1])
   table.append(["TOTAL",sum(money)])
 
 
@@ -105,29 +106,29 @@ while True:
 
   if maintime == 1:
     maintime = "Weekly"
-    timesboy(i_money, 7)
-    timesboy(e_money, 7)
+    timesboy(i_money, 1)
+    timesboy(e_money, 1)
     break
     
   elif maintime == 2:
     maintime = ("Fortnightly")
-    timesboy(i_money, 14)
-    timesboy(e_money, 14)
+    timesboy(i_money, 2)
+    timesboy(e_money, 2)
     break
   elif maintime == 3:
     maintime = ("Monthly")
-    timesboy(i_money, 30)
-    timesboy(e_money, 30)
+    timesboy(i_money, 4)
+    timesboy(e_money, 4)
     break
   elif maintime == 4:
     maintime = ("Quarterly")
-    timesboy(i_money, 90)
-    timesboy(e_money, 90)
+    timesboy(i_money, 12)
+    timesboy(e_money, 12)
     break
   elif maintime == 5:
     maintime = ("Yearly")
-    timesboy(i_money, 365)
-    timesboy(e_money, 365)
+    timesboy(i_money, 52)
+    timesboy(e_money, 52)
     break
   else:
     print("Please input either 1,2,3,4 or 5")
