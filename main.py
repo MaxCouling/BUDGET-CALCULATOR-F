@@ -42,31 +42,31 @@ def inputs(item,moneylist,time,topic,io):
         if timeinput == 1:
           time.append("Weekly")
           money = money / 1
-          print(money)#testing
+          
           moneylist.append(money)
           break
         elif timeinput == 2:
           time.append("Fortnightly")
           money = money / 2
-          print(money)#testing
+          
           moneylist.append(money)
           break
         elif timeinput == 3:
           time.append("Monthly")
           money = money / 4
-          print(money)#testing
+          
           moneylist.append(money)
           break
         elif timeinput == 4:
           time.append("Quarterly")
           money = money / 12
-          print(money)#testing
+          
           moneylist.append(money)
           break
         elif timeinput == 5:
           time.append("Yearly")
           money = money / 52
-          print(money)#testing
+          
           moneylist.append(money)
           break
         else:
@@ -76,9 +76,10 @@ def inputs(item,moneylist,time,topic,io):
 
 
 
-def timesboy(item, amount):
-  for i in range(len(item)):
-    item[i] = item[i] * amount
+def timesboy(money, amount):
+  #times the money list by the amount chosen in the function
+  for i in range(len(money)):
+    money[i] = money[i] * amount
 
 
 
@@ -89,18 +90,21 @@ def timesboy(item, amount):
 def fortables(item,money,time,table):
 
   for k in range(len(item)):
+    #adds the item money and the time the table for it to be graphed
     table.append([item[k],money[k],time],)
+    #sorts the 2nd ([1]), in a array aka money. from highest to lowest
     table.sort(reverse = True, key=lambda x: x[1])
   table.append(["TOTAL",sum(money)])
 
 
 
-
+#object oriented programming for input.
 inputs(i_item,i_money,i_time,"Income","in")
+#object oriented programming for output
 inputs(e_item,e_money,e_time,"Expense","out")
 os.system("clear")
 while True:
-
+  #timeframe code
   maintime = int(input("What would you like the timeframe of the table to be\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly"))
 
 
@@ -117,26 +121,29 @@ while True:
     break
   elif maintime == 3:
     maintime = ("Monthly")
+    #as there is 4 weeks in a month, we times it by 4 to make it monthly
     timesboy(i_money, 4)
     timesboy(e_money, 4)
     break
   elif maintime == 4:
     maintime = ("Quarterly")
+    #times the money by 12 to make the money quarterly
     timesboy(i_money, 12)
     timesboy(e_money, 12)
     break
   elif maintime == 5:
     maintime = ("Yearly")
+    #gives the functions 52 as that times the weekly by 52 to make a year
     timesboy(i_money, 52)
     timesboy(e_money, 52)
     break
   else:
+    #error prevention
     print("Please input either 1,2,3,4 or 5")
-
+#for tables for both income and expenses. Maintime is the time put in from the question
 fortables(i_item,i_money,maintime,incometable)
 fortables(e_item,e_money,maintime,expensetable)
 
-#sorting the tables(it works so im not touching it NVMVMMVMVMVMV
 
 print('\nINCOME\n')
 print(tabulate(incometable, headers=["Item","Money", "Time"]))
@@ -144,3 +151,4 @@ print("\nEXPENSES\n")
 print(tabulate(expensetable, headers=["Item","Money", "Time"]))
 print("\nWHAT'S LEFT\n")
 print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
+[
