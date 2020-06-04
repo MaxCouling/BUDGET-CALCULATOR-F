@@ -10,8 +10,89 @@ e_money=[]
 incometable= []
 expensetable = []
 
+#rent fodo
 
+#ask timeframe fist
 
+def timesboy(money, amount):
+  #times the money list by the amount chosen in the function
+  for i in range(len(money)):
+    money[i] = money[i] * amount
+
+def timeframe(comment, is_dividing, money, moneylist):#times or divide
+  global maintime
+  timeinput = int(input(comment + "\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly\n"))#1 2 or 3 4 or 5
+  
+  print(timeinput)
+  #WEEKLY
+  if timeinput == 1:
+    if is_dividing:
+      money /= 2
+      moneylist.append(money)
+      return
+    else:
+      maintime = "Weekly"
+      timesboy(i_money, 1)
+      timesboy(e_money, 1)
+      return
+  #WEEKLY    
+  elif timeinput == 2:
+    
+    if is_dividing:
+      money /= 2
+      moneylist.append(money)
+      return
+    else:
+      maintime = "Fortnightly"
+      timesboy(i_money, 2)
+      timesboy(e_money, 2)
+      return
+  #MONTHLY
+  elif timeinput == 3:
+    if is_dividing:
+      money /= 4 
+      moneylist.append(money)
+      return
+    else:#if not dividing we are multipying
+      maintime = "Monthly"
+      #as there is 4 weeks in a month, we times it by 4 to make it monthly
+      timesboy(i_money, 4)
+      timesboy(e_money, 4)
+      return
+  #QUARTERLY
+  elif timeinput == 4:
+    if is_dividing:
+      money /= 12 
+      moneylist.append(money)
+      return
+    else:
+      maintime = ("Quarterly")
+      #times the money by 12 to make the money quarterly
+      timesboy(i_money, 12)
+      timesboy(e_money, 12)
+      return
+  #YEARLY
+  elif timeinput == 5:
+    if is_dividing:
+      money /= 52
+      moneylist.append(money)
+      return
+    else:
+      maintime = ("Yearly")
+      #gives the functions 52 as that times the weekly by 52 to make a year
+      timesboy(i_money, 52)
+      timesboy(e_money, 52)
+  else:
+    print("Please input either 1,2,3,4 or 5")
+
+def fortables(item,money,time,table):
+
+  for k in range(len(item)):
+    #adds the item money and the time the table for it to be graphed
+    table.append([item[k],money[k],time],)
+    #sorts the 2nd ([1]), in a array aka money. from highest to lowest
+    table.sort(reverse = True, key=lambda x: x[1])
+  table.append(["TOTAL",sum(money)])
 
 def inputs(item,moneylist,time,topic,io):
   money = 0
@@ -33,68 +114,21 @@ def inputs(item,moneylist,time,topic,io):
         except:
           print("Try Again")
         else:
+          timeframe("Please input the timeframe for your money", True, money,moneylist)
           break
         
-      
-      while timeinput != 1 or 2 or 3 or 4 or 5:
-        timeinput = int(input("time assoated\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly\n"))#1 2 or 3 4 or 5
-        print(timeinput)
-        if timeinput == 1:
-          time.append("Weekly")
-          money = money / 1
-          
-          moneylist.append(money)
-          break
-        elif timeinput == 2:
-          time.append("Fortnightly")
-          money = money / 2
-          
-          moneylist.append(money)
-          break
-        elif timeinput == 3:
-          time.append("Monthly")
-          money = money / 4
-          
-          moneylist.append(money)
-          break
-        elif timeinput == 4:
-          time.append("Quarterly")
-          money = money / 12
-          
-          moneylist.append(money)
-          break
-        elif timeinput == 5:
-          time.append("Yearly")
-          money = money / 52
-          
-          moneylist.append(money)
-          break
-        else:
-          print("Please input either 1,2,3,4 or 5")
       continue
 
+def table():
+  os.system("clear")
+  print('\nINCOME\n')
+  print(tabulate(incometable, headers=["Item","Money", "Time"]))
+  print("\nEXPENSES\n")
+  print(tabulate(expensetable, headers=["Item","Money", "Time"]))
+  print("\nWHAT'S LEFT\n")
+  print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
 
 
-
-def timesboy(money, amount):
-  #times the money list by the amount chosen in the function
-  for i in range(len(money)):
-    money[i] = money[i] * amount
-
-
-
-
-
-
-
-def fortables(item,money,time,table):
-
-  for k in range(len(item)):
-    #adds the item money and the time the table for it to be graphed
-    table.append([item[k],money[k],time],)
-    #sorts the 2nd ([1]), in a array aka money. from highest to lowest
-    table.sort(reverse = True, key=lambda x: x[1])
-  table.append(["TOTAL",sum(money)])
 
 
 
@@ -102,53 +136,10 @@ def fortables(item,money,time,table):
 inputs(i_item,i_money,i_time,"Income","in")
 #object oriented programming for output
 inputs(e_item,e_money,e_time,"Expense","out")
-os.system("clear")
-while True:
-  #timeframe code
-  maintime = int(input("What would you like the timeframe of the table to be\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly"))
 
-
-  if maintime == 1:
-    maintime = "Weekly"
-    timesboy(i_money, 1)
-    timesboy(e_money, 1)
-    break
-    
-  elif maintime == 2:
-    maintime = ("Fortnightly")
-    timesboy(i_money, 2)
-    timesboy(e_money, 2)
-    break
-  elif maintime == 3:
-    maintime = ("Monthly")
-    #as there is 4 weeks in a month, we times it by 4 to make it monthly
-    timesboy(i_money, 4)
-    timesboy(e_money, 4)
-    break
-  elif maintime == 4:
-    maintime = ("Quarterly")
-    #times the money by 12 to make the money quarterly
-    timesboy(i_money, 12)
-    timesboy(e_money, 12)
-    break
-  elif maintime == 5:
-    maintime = ("Yearly")
-    #gives the functions 52 as that times the weekly by 52 to make a year
-    timesboy(i_money, 52)
-    timesboy(e_money, 52)
-    break
-  else:
-    #error prevention
-    print("Please input either 1,2,3,4 or 5")
+timeframe("What timeframe do you want your table to be?", False, "error", "error")
 #for tables for both income and expenses. Maintime is the time put in from the question
 fortables(i_item,i_money,maintime,incometable)
 fortables(e_item,e_money,maintime,expensetable)
 
-
-print('\nINCOME\n')
-print(tabulate(incometable, headers=["Item","Money", "Time"]))
-print("\nEXPENSES\n")
-print(tabulate(expensetable, headers=["Item","Money", "Time"]))
-print("\nWHAT'S LEFT\n")
-print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
-[
+table()
