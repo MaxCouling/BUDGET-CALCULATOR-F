@@ -10,9 +10,10 @@ e_money=[]
 incometable= []
 expensetable = []
 
-#rent fodo
-
-#ask timeframe fist
+#Make it easier to use
+#ability for one offs
+#export and import
+#
 
 def timesboy(money, amount):
   #times the money list by the amount chosen in the function
@@ -21,13 +22,19 @@ def timesboy(money, amount):
 
 def timeframe(comment, is_dividing, money, moneylist):#times or divide
   global maintime
-  timeinput = int(input(comment + "\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly\n"))#1 2 or 3 4 or 5
+  while True:
+    try: 
+      timeinput = int(input(comment + "\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly\n"))#1 2 or 3 4 or 5
+    except:
+      print("Try again")
+    else:
+      break
   
   print(timeinput)
   #WEEKLY
   if timeinput == 1:
     if is_dividing:
-      money /= 2
+      money /= 1
       moneylist.append(money)
       return
     else:
@@ -89,7 +96,7 @@ def fortables(item,money,time,table):
 
   for k in range(len(item)):
     #adds the item money and the time the table for it to be graphed
-    table.append([item[k],money[k],time],)
+    table.append([item[k],money[k],time])
     #sorts the 2nd ([1]), in a array aka money. from highest to lowest
     table.sort(reverse = True, key=lambda x: x[1])
   table.append(["TOTAL",sum(money)])
@@ -100,7 +107,7 @@ def inputs(item,moneylist,time,topic,io):
   while True:#while this is running
     os.system("clear")#clears os
     print("Household",topic, "\nMoney coming",io,"\nPress enter with nothing typed in to continue onto the next step\n")
-    useritem = input()
+    useritem = input("Name of Item: ")
     if useritem == "":#if the user inputs an enter it breaks the while loop
      break
 
@@ -110,7 +117,7 @@ def inputs(item,moneylist,time,topic,io):
       while True:
 
         try:
-          money = int(input("money assoatied\n"))#asks for money for the
+          money = int(input("Money assoatied with "+useritem+" $"))#asks for money for the
         except:
           print("Try Again")
         else:
@@ -119,7 +126,11 @@ def inputs(item,moneylist,time,topic,io):
         
       continue
 
-def table():
+def txt_table():
+  import sys 
+  #makes the next printed thing into a txt file
+  stdoutOrigin=sys.stdout 
+  sys.stdout = open("table.txt", "w") 
   os.system("clear")
   print('\nINCOME\n')
   print(tabulate(incometable, headers=["Item","Money", "Time"]))
@@ -127,7 +138,6 @@ def table():
   print(tabulate(expensetable, headers=["Item","Money", "Time"]))
   print("\nWHAT'S LEFT\n")
   print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
-
 
 
 
@@ -141,5 +151,11 @@ timeframe("What timeframe do you want your table to be?", False, "error", "error
 #for tables for both income and expenses. Maintime is the time put in from the question
 fortables(i_item,i_money,maintime,incometable)
 fortables(e_item,e_money,maintime,expensetable)
-
-table()
+#code makes the table that is shown to the user
+print('\nINCOME\n')
+print(tabulate(incometable, headers=["Item","Money", "Time"]))
+print("\nEXPENSES\n")
+print(tabulate(expensetable, headers=["Item","Money", "Time"]))
+print("\nWHAT'S LEFT\n")
+print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
+txt_table()
