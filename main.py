@@ -1,6 +1,7 @@
 import os#importing os
 from tabulate import tabulate#importing table function
-
+import json
+import time
 i_item = []
 i_money = []
 i_time =  []
@@ -9,11 +10,27 @@ e_time = []#defining all the lists as a list
 e_money=[]
 incometable= []
 expensetable = []
-
+fileworr = False
 #Make it easier to use
 #ability for one offs
 #export and import
 #
+
+import json
+def write_to_file():
+  
+  file_name= '{}_budget.txt'.format(user)
+  with open(file_name, 'w+') as file:
+    data = [incometable, expensetable,total]# writes the income and all that to the file
+    file.write(json.dumps(data))
+    file.close
+
+
+#try and exept if file not found raise an error
+
+
+
+
 
 def timesboy(money, amount):
   #times the money list by the amount chosen in the function
@@ -125,37 +142,64 @@ def inputs(item,moneylist,time,topic,io):
           break
         
       continue
-
-def txt_table():
-  import sys 
-  #makes the next printed thing into a txt file
-  stdoutOrigin=sys.stdout 
-  sys.stdout = open("table.txt", "w") 
-  os.system("clear")
+def e_or_i_table():
   print('\nINCOME\n')
   print(tabulate(incometable, headers=["Item","Money", "Time"]))
   print("\nEXPENSES\n")
   print(tabulate(expensetable, headers=["Item","Money", "Time"]))
   print("\nWHAT'S LEFT\n")
-  print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
+  print(tabulate([["total",total]],headers=())) 
 
-
-
-
-#object oriented programming for input.
-inputs(i_item,i_money,i_time,"Income","in")
-#object oriented programming for output
-inputs(e_item,e_money,e_time,"Expense","out")
-
-timeframe("What timeframe do you want your table to be?", False, "error", "error")
+#TWO BRANCHES FOR BOTH SVAING AND EDITING A FILE OR MAKING A NEW ONE
+user = input("What is your name? ")
+while True:
+    user_read_write = input("Write to file or read from existing file\n").upper()
+    print(user_read_write)
+    time.sleep(3)
+    if user_read_write == "WRITE" and "W":
+      file_w_or_r = True
+      break
+    elif user_read_write == "READ" and "LOAD" and "R":
+      file_w_or_r = False
+      file_name= '{}_budget.txt'.format(user)
+      with open(file_name, 'r') as file:
+        data = json.loads(file.read())
+        incometable = data[0]#setting the income and expense table as the file
+        expensetable = data[1]
+        total = data[2]
+       
+      break
+    else:
+      os.system("clear")
+      print("Please either put in 'WRITE' or 'READ'")
+print(file_w_or_r)
+time.sleep(3)
+if file_w_or_r:#if file is write or read. if it is true it is write, if it is false it is readprint("welcome to maxs loading files and budget calculaor"
+  
+  inputs(i_item,i_money,i_time,"Income","in")# programming for input.
+  inputs(e_item,e_money,e_time,"Expense","out")
+  #code for the timeframe
+  timeframe("What timeframe do you want your table to be?", False, "error", "error")
 #for tables for both income and expenses. Maintime is the time put in from the question
-fortables(i_item,i_money,maintime,incometable)
-fortables(e_item,e_money,maintime,expensetable)
-#code makes the table that is shown to the user
-print('\nINCOME\n')
-print(tabulate(incometable, headers=["Item","Money", "Time"]))
-print("\nEXPENSES\n")
-print(tabulate(expensetable, headers=["Item","Money", "Time"]))
-print("\nWHAT'S LEFT\n")
-print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
-txt_table()
+  fortables(i_item,i_money,maintime,incometable)
+  fortables(e_item,e_money,maintime,expensetable)
+  total = sum(i_money)-sum(e_money)#making the total
+
+  write_to_file()
+  #code makes the table that is shown to the user
+  e_or_i_table()
+elif not file_w_or_r:#if the code is on reading / loading mode
+  e_or_i_table()
+  time.sleep(3)
+  while True:
+    editfile = input("Would you like to edit the budget calculator?\n").upper()
+    if editfile == "YES" or "Y":
+      #edit file
+      print("FILE EDITED")
+    elif editfile == "NO" or "N":
+      #leave file as is and exit program
+      print("FILE NOT EDITED")
+    else:
+      os.system("clear")
+      print("Please input either Yes or No")
+

@@ -1,0 +1,1 @@
+[[["Poo", 2000.0, "Monthly"], ["Ye", 20.0, "Monthly"], ["TOTAL", 2020.0]], [["patty feet", 100.0, "Monthly"], ["TOTAL", 100.0]], 1920.0]
