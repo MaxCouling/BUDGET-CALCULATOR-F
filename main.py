@@ -11,6 +11,7 @@ e_money=[]
 incometable= []
 expensetable = []
 fileworr = False
+header=["Item","Money", "Time"]
 #Make it easier to use
 #ability for one offs
 #export and import
@@ -27,7 +28,6 @@ def write_to_file():
 
 
 #try and exept if file not found raise an error
-
 
 
 
@@ -109,6 +109,39 @@ def timeframe(comment, is_dividing, money, moneylist):#times or divide
   else:
     print("Please input either 1,2,3,4 or 5")
 
+def edit(table):
+  n = 1 # n is a simple counter that gives us the nice user input numbers to select. Thanks Mr Ward!
+  print('Which expense or income would you like to edit')
+  for i in range(len(table)):
+    print('{}) {}'.format(n,table[i][0])) # indexing the table[i][0]
+    n += 1
+  which_animal = int(input())
+  os.system('clear')
+  n = 1
+  
+  for i in range(1, len(header)):
+    print('{}) {}'.format(n, header[i]))
+    n += 1
+  which_entry = int(input())
+   
+    
+    
+    
+    
+
+ 
+  
+    
+  new_value = int(input('Please enter new value '))
+    
+    
+      
+      
+    
+  incometable[which_animal - 1][which_entry] = new_value
+  os.system('clear')
+
+
 def fortables(item,money,time,table):
 
   for k in range(len(item)):
@@ -143,37 +176,50 @@ def inputs(item,moneylist,time,topic,io):
         
       continue
 def e_or_i_table():
-  print('\nINCOME\n')
-  print(tabulate(incometable, headers=["Item","Money", "Time"]))
-  print("\nEXPENSES\n")
-  print(tabulate(expensetable, headers=["Item","Money", "Time"]))
-  print("\nWHAT'S LEFT\n")
-  print(tabulate([["total",total]],headers=())) 
+  os.system('clear')
+  try:
+    print('\nINCOME\n')
+    print(tabulate(incometable, header))
+    print("\nEXPENSES\n")
+    print(tabulate(expensetable, header))
+    print("\nWHAT'S LEFT\n")
+    print(tabulate([["total",total]],headers=())) 
+  except:
+    print("Hmm, nothing here")
+    time.sleep(3)
+    exit()
 
 #TWO BRANCHES FOR BOTH SVAING AND EDITING A FILE OR MAKING A NEW ONE
 user = input("What is your name? ")
 while True:
     user_read_write = input("Write to file or read from existing file\n").upper()
     print(user_read_write)
-    time.sleep(3)
+    
     if user_read_write == "WRITE" and "W":
       file_w_or_r = True
       break
     elif user_read_write == "READ" and "LOAD" and "R":
       file_w_or_r = False
       file_name= '{}_budget.txt'.format(user)
-      with open(file_name, 'r') as file:
-        data = json.loads(file.read())
-        incometable = data[0]#setting the income and expense table as the file
-        expensetable = data[1]
-        total = data[2]
+      try:
+        with open(file_name, 'r') as file:
+          data = json.loads(file.read())
+          incometable = data[0]#setting the income and expense table as the file
+          expensetable = data[1]
+          total = data[2]
+      except:
+        print("okay")
        
       break
     else:
       os.system("clear")
       print("Please either put in 'WRITE' or 'READ'")
 print(file_w_or_r)
-time.sleep(3)
+def exit():
+  os.system('clear')
+  while True:
+    input("Program Finished")
+
 if file_w_or_r:#if file is write or read. if it is true it is write, if it is false it is readprint("welcome to maxs loading files and budget calculaor"
   
   inputs(i_item,i_money,i_time,"Income","in")# programming for input.
@@ -193,12 +239,30 @@ elif not file_w_or_r:#if the code is on reading / loading mode
   time.sleep(3)
   while True:
     editfile = input("Would you like to edit the budget calculator?\n").upper()
-    if editfile == "YES" or "Y":
+    if editfile == "YES" and "Y":
       #edit file
-      print("FILE EDITED")
-    elif editfile == "NO" or "N":
+      
+      while True:
+        os.system("clear")
+        e_or_i_table()
+        value = input("Please input either i for editing income or e for editing expense.").upper()
+        if value == "I" and "INCOME":
+          os.system('clear')
+          e_or_i_table()
+          edit(incometable)
+        elif value == "E" and "EXPENSE":
+          os.system('clear')
+          e_or_i_table()
+          edit(expensetable)
+        elif value == "EXIT":
+          break
+        else:
+          os.system("clear")
+          print("Please Try again"          )
+    elif editfile == "NO" and "N":
       #leave file as is and exit program
       print("FILE NOT EDITED")
+      exit()
     else:
       os.system("clear")
       print("Please input either Yes or No")
