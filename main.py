@@ -1,56 +1,269 @@
-import os
-from tabulate import tabulate
+import os#importing os
+from tabulate import tabulate#importing table function
+import json
+import time
 i_item = []
 i_money = []
 i_time =  []
 e_item = []
 e_time = []#defining all the lists as a list
 e_money=[]
-while True:#while this is running
-  os.system("clear")#clears os
-  incomeitem = input("income item press enter to exit\n")
-  if incomeitem == "":#if the user inputs an enter it breaks the while loop
-    break
-
-  else:
-    i_item.append(incomeitem)#adds the income item to the income item(i_item) list
-    i_money.append (int(input("money assoatied\n")))#asks for money for the item
-    i_time.append(input("time assoated\n"))#1 2 or 3
-    continue
-
-while True:
-  os.system("clear")
-  expenseitem = input("expense item press enter to exit\n")
-
-  if expenseitem == "":
-    break
-
-  else:
-    
-    e_item.append(expenseitem)
-    e_money.append(int(input("money assoatied\n")))
-    e_time.append(input("time assoated\n"))#1 2 or 3
-    continue
-os.system("clear")
-
 incometable= []
 expensetable = []
-for k in range(len(i_item)):
-  incometable.append([i_item[k],i_money[k],i_time[k]],)
-incometable.append(["TOTAL",sum(i_money)])
+fileworr = False
+header=["Item","Money", "Time"]
+#Make it easier to use
+#ability for one offs
+#export and import
+#One off
 
-#incometable.append("TOTAL",sum(i_money))
-for i in range(len(e_item)):
-  expensetable.append([e_item[i],e_money[i],e_time[i]],)
-expensetable.append(["TOTAL",sum(e_money)])
+import json
+def write_to_file():
+  
+  file_name= '{}_budget.txt'.format(user)
+  with open(file_name, 'w+') as file:
+    data = [incometable, expensetable,total]# writes the income and all that to the file
+    file.write(json.dumps(data))
+    file.close
+
+
+#try and exept if file not found raise an error
 
 
 
-print(incometable.sort(reverse = True))
 
-print('\nINCOME\n')
-print(tabulate(incometable, headers=["Item","Money", "Time"]))
-print("\nEXPENSES\n")
-print(tabulate(expensetable, headers=["Item","Money", "Time"]))
-print("\nWHAT'S LEFT\n")
-print(tabulate([["total",sum(i_money)-sum(e_money)]],headers=()))
+def timesboy(money, amount):
+  #times the money list by the amount chosen in the function
+  for i in range(len(money)):
+    money[i] = money[i] * amount
+
+def timeframe(comment, is_dividing, money, moneylist):#times or divide
+  global maintime
+  while True:
+    try: 
+      timeinput = int(input(comment + "\nPress 1 for weekly\n2 for fortnightly\n3 for monthly\n4 for quarterly\n5 for yearly\n"))#1 2 or 3 4 or 5
+    except:
+      print("Try again")
+    else:
+      break
+  
+  print(timeinput)
+  #WEEKLY
+  if timeinput == 1:
+    if is_dividing:
+      money /= 1
+      moneylist.append(money)
+      return
+    else:
+      maintime = "Weekly"
+      timesboy(i_money, 1)
+      timesboy(e_money, 1)
+      return
+  #WEEKLY    
+  elif timeinput == 2:
+    
+    if is_dividing:
+      money /= 2
+      moneylist.append(money)
+      return
+    else:
+      maintime = "Fortnightly"
+      timesboy(i_money, 2)
+      timesboy(e_money, 2)
+      return
+  #MONTHLY
+  elif timeinput == 3:
+    if is_dividing:
+      money /= 4 
+      moneylist.append(money)
+      return
+    else:#if not dividing we are multipying
+      maintime = "Monthly"
+      #as there is 4 weeks in a month, we times it by 4 to make it monthly
+      timesboy(i_money, 4)
+      timesboy(e_money, 4)
+      return
+  #QUARTERLY
+  elif timeinput == 4:
+    if is_dividing:
+      money /= 12 
+      moneylist.append(money)
+      return
+    else:
+      maintime = ("Quarterly")
+      #times the money by 12 to make the money quarterly
+      timesboy(i_money, 12)
+      timesboy(e_money, 12)
+      return
+  #YEARLY
+  elif timeinput == 5:
+    if is_dividing:
+      money /= 52
+      moneylist.append(money)
+      return
+    else:
+      maintime = ("Yearly")
+      #gives the functions 52 as that times the weekly by 52 to make a year
+      timesboy(i_money, 52)
+      timesboy(e_money, 52)
+  else:
+    print("Please input either 1,2,3,4 or 5")
+
+def edit(table):
+  n = 1 # n is a simple counter that gives us the nice user input numbers to select. Thanks Mr Ward!
+  print('Which expense or income would you like to edit')
+  for i in range(len(table)):
+    print('{}) {}'.format(n,table[i][0])) # indexing the table[i][0]
+    n += 1
+  which_animal = int(input())
+  os.system('clear')
+  n = 1
+  
+  for i in range(1, len(header)):
+    print('{}) {}'.format(n, header[i]))
+    n += 1
+  which_entry = int(input())
+   
+    
+    
+    
+    
+
+ 
+  
+    
+  new_value = int(input('Please enter new value '))
+    
+    
+      
+      
+    
+  incometable[which_animal - 1][which_entry] = new_value
+  os.system('clear')
+
+
+def fortables(item,money,time,table):
+
+  for k in range(len(item)):
+    #adds the item money and the time the table for it to be graphed
+    table.append([item[k],money[k],time])
+    #sorts the 2nd ([1]), in a array aka money. from highest to lowest
+    table.sort(reverse = True, key=lambda x: x[1])
+  table.append(["TOTAL",sum(money)])
+
+def inputs(item,moneylist,time,topic,io):
+  money = 0
+  timeinput = 0
+  while True:#while this is running
+    os.system("clear")#clears os
+    print("Household",topic, "\nMoney coming",io,"\nPress enter with nothing typed in to continue onto the next step\n")
+    useritem = input("Name of Item: ")
+    if useritem == "":#if the user inputs an enter it breaks the while loop
+     break
+
+    else:
+      item.append(useritem)#adds the income item to the income item(i_item) list
+      
+      while True:
+
+        try:
+          money = int(input("Money assoatied with "+useritem+" $"))#asks for money for the
+        except:
+          print("Try Again")
+        else:
+          timeframe("Please input the timeframe for your money", True, money,moneylist)
+          break
+        
+      continue
+def e_or_i_table():
+  os.system('clear')
+  try:
+    print('\nINCOME\n')
+    print(tabulate(incometable, header))
+    print("\nEXPENSES\n")
+    print(tabulate(expensetable, header))
+    print("\nWHAT'S LEFT\n")
+    print(tabulate([["total",total]],headers=())) 
+  except:
+    print("Hmm, nothing here")
+    time.sleep(3)
+    exit()
+
+#TWO BRANCHES FOR BOTH SVAING AND EDITING A FILE OR MAKING A NEW ONE
+user = input("What is your name? ")
+while True:
+    user_read_write = input("Write to file or read from existing file\n").upper()
+    print(user_read_write)
+    
+    if user_read_write == "WRITE" and "W":
+      file_w_or_r = True
+      break
+    elif user_read_write == "READ" and "LOAD" and "R":
+      file_w_or_r = False
+      file_name= '{}_budget.txt'.format(user)
+      try:
+        with open(file_name, 'r') as file:
+          data = json.loads(file.read())
+          incometable = data[0]#setting the income and expense table as the file
+          expensetable = data[1]
+          total = data[2]
+      except:
+        print("okay")
+       
+      break
+    else:
+      os.system("clear")
+      print("Please either put in 'WRITE' or 'READ'")
+print(file_w_or_r)
+def exit():
+  os.system('clear')
+  while True:
+    input("Program Finished")
+
+if file_w_or_r:#if file is write or read. if it is true it is write, if it is false it is readprint("welcome to maxs loading files and budget calculaor"
+  
+  inputs(i_item,i_money,i_time,"Income","in")# programming for input.
+  inputs(e_item,e_money,e_time,"Expense","out")
+  #code for the timeframe
+  timeframe("What timeframe do you want your table to be?", False, "error", "error")
+#for tables for both income and expenses. Maintime is the time put in from the question
+  fortables(i_item,i_money,maintime,incometable)
+  fortables(e_item,e_money,maintime,expensetable)
+  total = sum(i_money)-sum(e_money)#making the total
+
+  write_to_file()
+  #code makes the table that is shown to the user
+  e_or_i_table()
+elif not file_w_or_r:#if the code is on reading / loading mode
+  e_or_i_table()
+  time.sleep(3)
+  while True:
+    editfile = input("Would you like to edit the budget calculator?\n").upper()
+    if editfile == "YES" and "Y":
+      #edit file
+      
+      while True:
+        os.system("clear")
+        e_or_i_table()
+        value = input("Please input either i for editing income or e for editing expense.").upper()
+        if value == "I" and "INCOME":
+          os.system('clear')
+          e_or_i_table()
+          edit(incometable)
+        elif value == "E" and "EXPENSE":
+          os.system('clear')
+          e_or_i_table()
+          edit(expensetable)
+        elif value == "EXIT":
+          break
+        else:
+          os.system("clear")
+          print("Please Try again"          )
+    elif editfile == "NO" and "N":
+      #leave file as is and exit program
+      print("FILE NOT EDITED")
+      exit()
+    else:
+      os.system("clear")
+      print("Please input either Yes or No")
+
